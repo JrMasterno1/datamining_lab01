@@ -24,18 +24,19 @@ def isNaN(item):
 
 def main(argv):
     inputfile = ''
+    outputfile = ''
     threshold = 0.0
     
     # check argv from command line
-    usage = 'usage:python delete-missing.py <inputfile> --threshold <thresholdvalue>\nE.g: thresholdvalue: 50% ~ 0.5' 
-    if (len(argv) != 3):
+    usage = 'usage:python delete-missing.py <inputfile> --threshold <thresholdvalue: 50% ~ 0.5> --out <outputfile>' 
+    if (len(argv) != 5):
         print(usage)
         sys.exit(2)
     inputfile = argv[0]
     
     # get the threshold value
     try:
-        opts, args = getopt.getopt(argv[1:],"", ["threshold="])
+        opts, args = getopt.getopt(argv[1:],"", ["threshold=", "out="])
     except getopt.GetoptError:
         print(usage)
         sys.exit(2)
@@ -50,6 +51,8 @@ def main(argv):
             except ValueError:
                 print(usage)
                 sys.exit(2)
+        elif opt == "--out":
+            outputfile = arg
         
     # read file
     df = pd.read_csv(inputfile)
@@ -61,7 +64,7 @@ def main(argv):
             del df[column]
 
     # export data to csv file    
-    df.to_csv(inputfile, index=False)
+    df.to_csv(outputfile, index=False)
 
 if __name__ == "__main__":
     main(sys.argv[1:]) # ignore --.py
