@@ -67,7 +67,7 @@ def mode(col):
 
     return max(category, key=category.get) 
 
-def fill(col, method):
+def impute(col, method):
     """
     Fill missing values with mean, median ( for numeric ) or mode (for categorical)
     @param col column
@@ -80,8 +80,6 @@ def fill(col, method):
         replace_value = median(col)
     elif method == 'mode':
         replace_value = mode(col)
-    print(replace_value)
-    
 
     for index, item in enumerate(col):            
         if (isNaN(item)):
@@ -89,7 +87,8 @@ def fill(col, method):
 
 def main():
     # extract argv from command line
-    usage = 'usage:python impute.py <inputfile> --method=<mean/median/mode> --columns <list_of_columns> --out <outputfile>';
+    # usage: python impute.py <inputfile> --method=<mean/median/mode> --columns <list_of_columns> --out <outputfile>
+    # or you can type 'python impute.py -h' for help
     parser = argparse.ArgumentParser(description='Replace missing values with mean/median/mode')
     parser.add_argument('input', type=str)
     parser.add_argument('--method', type=str, choices=['mean','median','mode'])
@@ -108,7 +107,7 @@ def main():
 
     for name in columns:
         if name in df.head():
-            fill(col=df[name], method=method)
+            impute(col=df[name], method=method)
         else:
             print("Column ['" , name, "'] is not in the dataset") 
     
