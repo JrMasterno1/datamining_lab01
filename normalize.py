@@ -33,8 +33,9 @@ def minmax(col):
     """
     max_value = max(col)
     min_value = min(col)
-    for item in col:
-        col[item] = (item - min_value)/ (max_value - min_value)
+    for index, item in enumerate(col):
+        col.loc[index] = (item - min_value) / (max_value - min_value)
+    return col
 
 def zscore(col):
     """
@@ -42,9 +43,11 @@ def zscore(col):
     @col column
     """
     mean_value = mean(col)
-    standard_deviation = math.sqrt(sum([(item - mean_value)**2 for item in col] / len(col)))
-    for item in col:
-        col[item] = (item - mean) / standard_deviation
+    standard_deviation = math.sqrt(sum([(item - mean_value)**2 for item in col]) / len(col))
+    for index, item in enumerate(col):
+        col.loc[index] = (item - mean_value) / standard_deviation
+    
+    return col
         
 def normalize(col, measure):
     """
@@ -53,9 +56,9 @@ def normalize(col, measure):
     @param measure z-score or min-max
     """
     if measure == 'minmax':
-        minmax(col)
+        col = minmax(col)
     elif measure == 'zscore':
-        zscore(col)
+        col = zscore(col)
 
 def main():
     # extract argv from command line
@@ -74,8 +77,7 @@ def main():
     outputfile = args.out
 
     # read csv file
-    df = pd.read_csv(inputfile)
-    
+    df = pd.read_csv(inputfile)    
 
     for name in columns:
         if name in df.head():

@@ -83,7 +83,7 @@ def impute(col, method):
 
     for index, item in enumerate(col):            
         if (isNaN(item)):
-            col[index] = replace_value
+            col.loc[index] = replace_value
 
 def main():
     # extract argv from command line
