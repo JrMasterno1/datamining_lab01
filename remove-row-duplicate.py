@@ -1,12 +1,18 @@
 import sys
 import pandas as pd
+import numpy as np
 
+def to_string(series):
+    my_str = ""
+    for col in series:
+        my_str += str(col) + " "
+    return my_str
 
 
 def main():
     # check argv from command line
     if (len(sys.argv) != 3):
-        print('usage:python count-missing.py <inputfile> <outputfile>')
+        print('usage:python remove-row-duplicate.py <inputfile> <outputfile>')
         sys.exit(3)
 
     # read file
@@ -14,18 +20,18 @@ def main():
     outputfile = sys.argv[2]
     df = pd.read_csv(inputfile)
 
+    n = len(df)
+    update_df = []
+    found = [] # contain duplicate Id
+    #remove duplicate
+    for i in range(n):
+        if to_string(df.iloc[i]) not in found:
+            update_df.append(df.iloc[i])
+            found.append(to_string(df.iloc[i]))
 
-    k = 0
-    for i in range(len(df)):
-
-        for j in range(i+1, len(df)):
-            if df.iloc[i, :].to_string() == df.iloc[j, :].to_string():
-                k+=1
-            if k + j >= len(df):
-                break
-            df.iloc[j, :] = df.iloc[j+k, :]
-
-    df.to_csv(outputfile)
+    #create new dataframe obtained from update_df
+    new_df = pd.DataFrame(data=update_df)
+    new_df.to_csv(outputfile, index=False)
 
 if __name__ == "__main__":
     main()
