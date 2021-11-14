@@ -17,19 +17,17 @@ def main():
     outputfile = args.out
     newcol = args.newcol
 
-    print(inputfile)
-    print(calculation)
-    print(outputfile)
     cal = calculation.split()
-    print(cal)
     # read file
     df = pd.read_csv(inputfile)
+
+
     result = []
+    #calculate
     for i in range(len(df)):
         my_str = ""
         for j in range(0,len(cal)):
             if j % 2 == 0:
-
                 my_str += str(df[cal[j]][i])
             else:
                 my_str += cal[j]
@@ -37,6 +35,9 @@ def main():
             result.append(float("nan"))
         else:
             result.append(eval(my_str))
+    #end calculate
+
+    #add new column to df
     df[newcol] = result
 
     # export data to csv file    

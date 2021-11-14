@@ -22,7 +22,8 @@ def main():
 
     n = len(df)
     update_df = []
-    found = [] # contain duplicate Id
+    found = [] # contain duplicate
+    
     #remove duplicate
     for i in range(n):
         if to_string(df.iloc[i]) not in found:
